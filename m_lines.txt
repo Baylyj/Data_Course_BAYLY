@@ -1,0 +1,8 @@
+   49 /c/Users/AJBayly/documents/r/Data_Course_Material/Data_Course/data/data-shell/data/pdb/maltose.pdb
+   35 /c/Users/AJBayly/documents/r/Data_Course_Material/Data_Course/data/data-shell/data/pdb/menthol.pdb
+    9 /c/Users/AJBayly/documents/r/Data_Course_Material/Data_Course/data/data-shell/data/pdb/methane.pdb
+   10 /c/Users/AJBayly/documents/r/Data_Course_Material/Data_Course/data/data-shell/data/pdb/methanol.pdb
+   36 /c/Users/AJBayly/documents/r/Data_Course_Material/Data_Course/data/data-shell/data/pdb/mint.pdb
+   44 /c/Users/AJBayly/documents/r/Data_Course_Material/Data_Course/data/data-shell/data/pdb/morphine.pdb
+   41 /c/Users/AJBayly/documents/r/Data_Course_Material/Data_Course/data/data-shell/data/pdb/mustard.pdb
+  224 total
