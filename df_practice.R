@@ -11,3 +11,5 @@ A = df[df$`Total Grade` >= 700,]
 A[order(A$`Total Grade`, decreasing = TRUE),]
 
 sample(df$`Total Grade`)
+
+
