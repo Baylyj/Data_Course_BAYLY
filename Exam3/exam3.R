@@ -32,5 +32,3 @@ meta$SampleID = NULL
 meta$SampleType = as.factor(meta$SampleType)
 submeta = meta[rownames(meta[c(which(meta$SampleType == "Soil"),which(meta$SampleType == "rhizosphere")),]),]
 subtable = table[rownames(submeta)]
-
-#I then spent an hour trying to get adonis to work :(
