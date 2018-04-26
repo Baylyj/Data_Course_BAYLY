@@ -5,7 +5,7 @@ output: html_document
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
-setwd ("~/r/Data_Course/Data_Course_BAYLY/Final/")
+setwd ("~/r/Data_Course/Data_Course_BAYLY/Final_Project/")
 library(dplyr)
 library(tibble)
 library(purrr)
@@ -31,18 +31,19 @@ Several noteworthy assumptions were made
 * It is assumed that the goal of every student is to recieve the best grade possible. Each model treats these results as "positive" and others as "negative".
 * Since the purpose was to help future students improve their grade, only variables within a student's control were considered(Year taken, but not declared major, etc.)
 * Since this analysis operates only with grade and basic student data, it assumes that the large sample size will account for other variables, such as personal and family characteristics. 
+* When considering grade as a sum of points earned, it is obvious that assignments, quizzes, etc would have a statistically significant effect on grade. Therefore, when considering these factors, we will either explore them on a comparitive basis (which has a greater effect) or carefully select an arbitrary score on those areas to consider "good" and test the effectiveness of that score.
 
 ### Input and Clean Data
 
 The following method was used to import and format the data, including removing unecessary information and adding useful formats of existing information. Details on the methodology will be discussed in the corresponding section.
 ```{r message=FALSE, warning=FALSE, results="hide"}
-info1 = read.csv("~/R/Data_Course/Data_Course_BAYLY/Final/Student_Info_Sec-001.csv")
-info2 = read.csv("~/R/Data_Course/Data_Course_BAYLY/Final/Student_Info_Sec-002.csv")
-info3 = read.csv("~/R/Data_Course/Data_Course_BAYLY/Final/Student_Info_Sec-003.csv")
-grades1 = read.csv("~/R/Data_Course/Data_Course_BAYLY/Final/Student_Grades_Sec-001.csv")
-grades2 = read.csv("~/R/Data_Course/Data_Course_BAYLY/Final/Student_Grades_Sec-002.csv")
-grades3 = read.csv("~/R/Data_Course/Data_Course_BAYLY/Final/Student_Grades_Sec-003.csv")
-data = read.csv("~/R/Data_Course/Data_Course_BAYLY/Final/Section_Info.csv")
+info1 = read.csv("~/R/Data_Course/Data_Course_BAYLY/Final_Project/Student_Info_Sec-001.csv")
+info2 = read.csv("~/R/Data_Course/Data_Course_BAYLY/Final_Project/Student_Info_Sec-002.csv")
+info3 = read.csv("~/R/Data_Course/Data_Course_BAYLY/Final_Project/Student_Info_Sec-003.csv")
+grades1 = read.csv("~/R/Data_Course/Data_Course_BAYLY/Final_Project/Student_Grades_Sec-001.csv")
+grades2 = read.csv("~/R/Data_Course/Data_Course_BAYLY/Final_Project/Student_Grades_Sec-002.csv")
+grades3 = read.csv("~/R/Data_Course/Data_Course_BAYLY/Final_Project/Student_Grades_Sec-003.csv")
+data = read.csv("~/R/Data_Course/Data_Course_BAYLY/Final_Project/Section_Info.csv")
 
 names1 = colnames(grades1)
 strsplit(names1,"..3", fixed = TRUE) -> names1
@@ -216,6 +217,8 @@ ggplot(full, aes(x = Extra, y = Final.Score, fill = Extra))+
   geom_hline(yintercept = c(85.7,77.1,68.6,57.1))+
   labs(x = "Points Earned", title = "Score vs. Your Choice Points", y = "Final Score", fill = "Key")
 ```
+
+
 As clearly demonstrated by the graph, failing to at least earn the required 100 points severely impacts a sudent's ability to earn a successful grade. The average final grade between "Full" and "100" is also significant:
 ```{r echo=FALSE}
 mean(full$Final.Score[as.integer(rownames(subset(full,full$Extra == "Full")))])
@@ -233,6 +236,8 @@ ggplot(full, aes(x = as.factor(Quiz.average), y = Final.Score, fill = as.factor(
   theme(panel.grid.minor = element_blank())+
   geom_hline(yintercept = c(85.7,77.1,68.6,57.1))
 ```
+
+
 The graph demonstrates a dramatic improvement between an average score of 2 and 3. 3 also happens to be very close to the mean of the average scores across the data. A student should average at least 3 out of 5 on the regular quizzes.
 
 #### Quizzes, or Assignments?
@@ -255,10 +260,14 @@ ggplot(full, aes(x = Quizzes.Final.Score, y = Final.Score, color = as.factor(Ext
   geom_hline(yintercept = c(85.7,77.1,68.6,57.1))+
   labs(x = "Quiz Score", y = "Final Score", title = "Final Score vs. Quiz Score", fill= "Your Choice")
 ```
+
+
 The clustering in the graphs clearly demonstrates a correlatio between each variable and final grade. The following is the same data displayed on a single plot.  
 ```{r echo=FALSE}
 points3D(full$Final.Score,full$Your.Choice.Final.Points,full$Quizzes.Final.Score, color = full$color, pch3d = 20, theta = -50, phi = -10, xlab = "Grade", ylab = "Your Choice", zlab = "Quizzes")
 ```
+
+
 It is difficult to distinguish which variable plays a more significant role. Below is a model summary for their effect on grade  
 ```{r}
 summary.aov(aov(full$Final.Score ~ full$Extra + full$Quiz.good))
@@ -270,7 +279,7 @@ summary.aov(aov(full$Final.Score ~ full$Extra + full$Quiz.good))[[1]][["Pr(>F)"]
 ```
 Extra credit on Your Choice assignments plays a more direct role on grade than averaging a 3 on the quizzes.  
 
-####Class Days
+#### Class Days
 
 During Fall 2017, there were three sections of Biology 1620 taught. Two of those sections (1 and 2) were taught 3 times per week in the afternoon. The third section was taught twice per week in the morning. Because there were only 3 variables, it will be impossible to consider time of day and number of classes per week independently. We will consider them together.    
 ```{r echo=FALSE}
@@ -281,6 +290,8 @@ ggplot(full, aes(x = as.factor(Days), y = Final.Score, fill = as.factor(Days)))+
   geom_hline(yintercept = c(85.7,77.1,68.6,57.1))+
   labs(x = "Classes per Week", title = "Score vs. Number of Classes Per Week")
 ```
+
+
 The obvious trend in the graph is affirmed by the model summary  
 ```{r}
 summary.aov(aov(full$Final.Score ~ as.factor(full$Days)))
